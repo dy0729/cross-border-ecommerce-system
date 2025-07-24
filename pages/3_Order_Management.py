@@ -18,7 +18,7 @@ st.write("实时订单系统 | 订单量预测 | 备货建议")
 @st.cache_data
 def load_order_data():
     try:
-        df = pd.read_csv('跨境电商/data/enhanced_customer_orders.csv')
+        df = pd.read_csv('data/enhanced_customer_orders.csv')
         df['order_date'] = pd.to_datetime(df['order_date'])
         return df
     except FileNotFoundError:

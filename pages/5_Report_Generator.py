@@ -19,13 +19,13 @@ st.write("生成完整的跨境电商决策分析报告")
 @st.cache_data
 def load_all_data():
     try:
-        orders_df = pd.read_csv('跨境电商/data/enhanced_customer_orders.csv')
+        orders_df = pd.read_csv('data/enhanced_customer_orders.csv')
         orders_df['order_date'] = pd.to_datetime(orders_df['order_date'])
-        
-        suppliers_df = pd.read_csv('跨境电商/data/enhanced_supplier_data.csv')
-        
+
+        suppliers_df = pd.read_csv('data/enhanced_supplier_data.csv')
+
         try:
-            crawled_suppliers_df = pd.read_csv('跨境电商/data/crawled_suppliers.csv')
+            crawled_suppliers_df = pd.read_csv('data/crawled_suppliers.csv')
         except FileNotFoundError:
             crawled_suppliers_df = pd.DataFrame()
         

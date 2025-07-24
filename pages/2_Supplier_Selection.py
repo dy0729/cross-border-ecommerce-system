@@ -103,7 +103,7 @@ try:
 
         # 加载爬取的供应商数据
         try:
-            crawled_df = pd.read_csv('跨境电商/data/crawled_suppliers.csv')
+            crawled_df = pd.read_csv('data/crawled_suppliers.csv')
             st.success(f"✅ 加载了 {len(crawled_df)} 条爬取的供应商数据")
 
             # 合并数据源

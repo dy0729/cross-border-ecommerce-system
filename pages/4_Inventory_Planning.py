@@ -16,10 +16,10 @@ st.write("基于需求预测的库存优化 | 安全库存计算 | 补货建议"
 @st.cache_data
 def load_data():
     try:
-        orders_df = pd.read_csv('跨境电商/data/enhanced_customer_orders.csv')
+        orders_df = pd.read_csv('data/enhanced_customer_orders.csv')
         orders_df['order_date'] = pd.to_datetime(orders_df['order_date'])
-        
-        suppliers_df = pd.read_csv('跨境电商/data/enhanced_supplier_data.csv')
+
+        suppliers_df = pd.read_csv('data/enhanced_supplier_data.csv')
         
         return orders_df, suppliers_df
     except FileNotFoundError:

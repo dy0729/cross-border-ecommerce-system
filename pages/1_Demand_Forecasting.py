@@ -15,12 +15,28 @@ st.markdown("---")
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv('data/orders.csv')
+        # 尝试加载增强版订单数据
+        df = pd.read_csv('data/enhanced_customer_orders.csv')
         df['order_date'] = pd.to_datetime(df['order_date'])
+        # 重命名列以保持兼容性
+        df = df.rename(columns={
+            'product_name': 'product',
+            'customer_region': 'region'
+        })
         return df
     except FileNotFoundError:
-        st.error("❌ 数据文件未找到，请确保 data/orders.csv 文件存在")
-        return pd.DataFrame()
+        try:
+            # 备用：尝试加载基础订单数据
+            df = pd.read_csv('data/customer_orders.csv')
+            df['order_date'] = pd.to_datetime(df['order_date'])
+            df = df.rename(columns={
+                'product_name': 'product',
+                'customer_region': 'region'
+            })
+            return df
+        except FileNotFoundError:
+            st.error("❌ 数据文件未找到，请确保数据文件存在")
+            return pd.DataFrame()
 
 df_orders = load_data()
 
