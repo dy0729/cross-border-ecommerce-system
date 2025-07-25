@@ -8,12 +8,17 @@ import io
 import base64
 from scipy import stats
 import warnings
+import os
+
+# 确保工作目录正确
+script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(script_dir)
 warnings.filterwarnings('ignore')
 
-st.set_page_config(page_title="数据报告生成器", layout="wide")
+st.set_page_config(page_title="智链云 - 报告生成", layout="wide")
 
 st.title("📊 智能数据报告生成器")
-st.write("生成完整的跨境电商决策分析报告")
+st.write("生成完整的企业决策分析报告")
 
 # 加载所有数据
 @st.cache_data

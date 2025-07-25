@@ -3,9 +3,13 @@ import pandas as pd
 import numpy as np
 import os
 
-st.set_page_config(page_title="供应商选择", layout="wide")
+# 确保工作目录正确
+script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(script_dir)
 
-st.title("🤝 供应商选择模块")
+st.set_page_config(page_title="智链云 - 供应商选择", layout="wide")
+
+st.title("🤝 智能供应商选择模块")
 st.write("基于多准则决策分析的智能供应商评估系统")
 
 # 检查数据文件

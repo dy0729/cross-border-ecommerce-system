@@ -5,10 +5,15 @@ from sklearn.linear_model import LinearRegression
 import numpy as np
 import plotly.graph_objects as go
 from datetime import timedelta
+import os
 
-st.set_page_config(page_title="客户需求预测", layout="wide")
+# 确保工作目录正确
+script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(script_dir)
 
-st.title("📈 客户需求预测模块")
+st.set_page_config(page_title="智链云 - 需求预测", layout="wide")
+
+st.title("📈 智能需求预测模块")
 st.markdown("---")
 
 # 加载数据

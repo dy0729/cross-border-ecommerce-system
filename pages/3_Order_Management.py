@@ -7,9 +7,15 @@ from datetime import datetime, timedelta
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 import warnings
+import os
+
 warnings.filterwarnings('ignore')
 
-st.set_page_config(page_title="订单管理系统", layout="wide")
+# 确保工作目录正确
+script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(script_dir)
+
+st.set_page_config(page_title="智链云 - 订单管理", layout="wide")
 
 st.title("📦 智能订单管理系统")
 st.write("实时订单系统 | 订单量预测 | 备货建议")

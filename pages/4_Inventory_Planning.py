@@ -5,11 +5,17 @@ import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
 import warnings
+import os
+
 warnings.filterwarnings('ignore')
 
-st.set_page_config(page_title="备货预测", layout="wide")
+# 确保工作目录正确
+script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(script_dir)
 
-st.title("📦 智能备货预测系统")
+st.set_page_config(page_title="智链云 - 库存规划", layout="wide")
+
+st.title("📦 智能库存规划系统")
 st.write("基于需求预测的库存优化 | 安全库存计算 | 补货建议")
 
 # 加载数据
