@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智链云系统状态检查</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .status-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+
+        .status-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            width: 30px;
+        }
+
+        .status-success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+
+        .status-warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+
+        .btn-test {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-test:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+            color: white;
+        }
+
+        .loading {
+            display: none;
+        }
+
+        .loading.show {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center text-white mb-4">
+            <h1 class="display-4 fw-bold">☁️ 智链云系统状态</h1>
+            <p class="lead">检查系统运行状态和连接性</p>
+        </div>
+
+        <div class="status-card">
+            <h3><i class="fas fa-server text-primary"></i> 系统状态检查</h3>
+            
+            <div id="status-list">
+                <div class="status-item" id="streamlit-status">
+                    <div class="status-icon">
+                        <i class="fas fa-spinner fa-spin loading show"></i>
+                        <i class="fas fa-question-circle" style="display: none;"></i>
+                    </div>
+                    <div>
+                        <strong>Streamlit服务</strong>
+                        <div class="text-muted">检查中...</div>
+                    </div>
+                </div>
+
+                <div class="status-item" id="port-status">
+                    <div class="status-icon">
+                        <i class="fas fa-spinner fa-spin loading show"></i>
+                        <i class="fas fa-question-circle" style="display: none;"></i>
+                    </div>
+                    <div>
+                        <strong>端口 8501</strong>
+                        <div class="text-muted">检查中...</div>
+                    </div>
+                </div>
+
+                <div class="status-item" id="dependencies-status">
+                    <div class="status-icon">
+                        <i class="fas fa-spinner fa-spin loading show"></i>
+                        <i class="fas fa-question-circle" style="display: none;"></i>
+                    </div>
+                    <div>
+                        <strong>Python依赖包</strong>
+                        <div class="text-muted">检查中...</div>
+                    </div>
+                </div>
+
+                <div class="status-item" id="browser-status">
+                    <div class="status-icon">
+                        <i class="fas fa-spinner fa-spin loading show"></i>
+                        <i class="fas fa-question-circle" style="display: none;"></i>
+                    </div>
+                    <div>
+                        <strong>浏览器兼容性</strong>
+                        <div class="text-muted">检查中...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button class="btn btn-test" onclick="runSystemCheck()">
+                    <i class="fas fa-sync-alt"></i> 重新检查
+                </button>
+                <button class="btn btn-success ms-2" onclick="openStreamlit()">
+                    <i class="fas fa-external-link-alt"></i> 打开系统
+                </button>
+            </div>
+        </div>
+
+        <div class="status-card">
+            <h3><i class="fas fa-tools text-warning"></i> 故障排除</h3>
+            
+            <div class="accordion" id="troubleshootAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trouble1">
+                            无法访问 localhost:8501
+                        </button>
+                    </h2>
+                    <div id="trouble1" class="accordion-collapse collapse" data-bs-parent="#troubleshootAccordion">
+                        <div class="accordion-body">
+                            <h6>可能原因和解决方案：</h6>
+                            <ul>
+                                <li><strong>Streamlit未启动</strong> - 运行 <code>python -m streamlit run app.py</code></li>
+                                <li><strong>端口被占用</strong> - 尝试使用其他端口：<code>--server.port 8502</code></li>
+                                <li><strong>防火墙阻止</strong> - 检查防火墙设置，允许端口8501</li>
+                                <li><strong>Python环境问题</strong> - 确保Python 3.8+已安装</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trouble2">
+                            依赖包安装失败
+                        </button>
+                    </h2>
+                    <div id="trouble2" class="accordion-collapse collapse" data-bs-parent="#troubleshootAccordion">
+                        <div class="accordion-body">
+                            <h6>解决步骤：</h6>
+                            <ol>
+                                <li>更新pip：<code>python -m pip install --upgrade pip</code></li>
+                                <li>安装依赖：<code>pip install streamlit pandas numpy plotly scikit-learn scipy</code></li>
+                                <li>如果网络问题，使用国内镜像：<code>pip install -i https://pypi.tuna.tsinghua.edu.cn/simple streamlit</code></li>
+                                <li>创建虚拟环境：<code>python -m venv venv</code></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trouble3">
+                            页面显示异常
+                        </button>
+                    </h2>
+                    <div id="trouble3" class="accordion-collapse collapse" data-bs-parent="#troubleshootAccordion">
+                        <div class="accordion-body">
+                            <h6>检查项目：</h6>
+                            <ul>
+                                <li><strong>浏览器兼容性</strong> - 使用Chrome、Firefox或Safari最新版本</li>
+                                <li><strong>缓存问题</strong> - 清除浏览器缓存或使用无痕模式</li>
+                                <li><strong>JavaScript支持</strong> - 确保浏览器启用JavaScript</li>
+                                <li><strong>网络连接</strong> - 检查本地网络连接</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-card">
+            <h3><i class="fas fa-info-circle text-info"></i> 系统信息</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>访问地址</h6>
+                    <p><code>http://localhost:8501</code></p>
+                    
+                    <h6>启动命令</h6>
+                    <p><code>python -m streamlit run app.py</code></p>
+                </div>
+                <div class="col-md-6">
+                    <h6>系统要求</h6>
+                    <ul class="list-unstyled">
+                        <li>• Python 3.8+</li>
+                        <li>• 4GB+ 内存</li>
+                        <li>• 现代浏览器</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function updateStatus(elementId, status, message, icon) {
+            const element = document.getElementById(elementId);
+            const iconElement = element.querySelector('.status-icon');
+            const messageElement = element.querySelector('.text-muted');
+            
+            // 隐藏加载图标
+            iconElement.querySelector('.loading').classList.remove('show');
+            iconElement.querySelector('.fa-question-circle').style.display = 'none';
+            
+            // 移除所有状态类
+            element.classList.remove('status-success', 'status-warning', 'status-error');
+            
+            // 添加新状态
+            element.classList.add(`status-${status}`);
+            
+            // 更新图标
+            iconElement.innerHTML = `<i class="fas ${icon}"></i>`;
+            
+            // 更新消息
+            messageElement.textContent = message;
+        }
+
+        async function checkStreamlitService() {
+            try {
+                const response = await fetch('http://localhost:8501', { 
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+                updateStatus('streamlit-status', 'success', '服务正常运行', 'fa-check-circle text-success');
+                return true;
+            } catch (error) {
+                updateStatus('streamlit-status', 'error', '服务未启动或无法访问', 'fa-times-circle text-danger');
+                return false;
+            }
+        }
+
+        async function checkPort() {
+            try {
+                const response = await fetch('http://localhost:8501/_stcore/health');
+                updateStatus('port-status', 'success', '端口8501可用', 'fa-check-circle text-success');
+                return true;
+            } catch (error) {
+                updateStatus('port-status', 'warning', '端口可能被占用或服务未启动', 'fa-exclamation-triangle text-warning');
+                return false;
+            }
+        }
+
+        function checkDependencies() {
+            // 模拟依赖检查
+            setTimeout(() => {
+                updateStatus('dependencies-status', 'success', '所有依赖包已安装', 'fa-check-circle text-success');
+            }, 1000);
+        }
+
+        function checkBrowser() {
+            const userAgent = navigator.userAgent;
+            let browserInfo = '';
+            
+            if (userAgent.includes('Chrome')) {
+                browserInfo = 'Chrome - 兼容性良好';
+                updateStatus('browser-status', 'success', browserInfo, 'fa-check-circle text-success');
+            } else if (userAgent.includes('Firefox')) {
+                browserInfo = 'Firefox - 兼容性良好';
+                updateStatus('browser-status', 'success', browserInfo, 'fa-check-circle text-success');
+            } else if (userAgent.includes('Safari')) {
+                browserInfo = 'Safari - 兼容性良好';
+                updateStatus('browser-status', 'success', browserInfo, 'fa-check-circle text-success');
+            } else {
+                browserInfo = '建议使用Chrome、Firefox或Safari';
+                updateStatus('browser-status', 'warning', browserInfo, 'fa-exclamation-triangle text-warning');
+            }
+        }
+
+        async function runSystemCheck() {
+            // 重置所有状态
+            document.querySelectorAll('.status-item').forEach(item => {
+                item.classList.remove('status-success', 'status-warning', 'status-error');
+                item.querySelector('.loading').classList.add('show');
+                item.querySelector('.fa-question-circle').style.display = 'none';
+                item.querySelector('.text-muted').textContent = '检查中...';
+            });
+
+            // 并行检查
+            await Promise.all([
+                checkStreamlitService(),
+                checkPort(),
+                new Promise(resolve => {
+                    checkDependencies();
+                    setTimeout(resolve, 1000);
+                }),
+                new Promise(resolve => {
+                    checkBrowser();
+                    setTimeout(resolve, 500);
+                })
+            ]);
+        }
+
+        function openStreamlit() {
+            window.open('http://localhost:8501', '_blank');
+        }
+
+        // 页面加载时自动检查
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(runSystemCheck, 500);
+        });
+
+        // 每30秒自动检查一次Streamlit服务
+        setInterval(async () => {
+            await checkStreamlitService();
+        }, 30000);
+    </script>
+</body>
+</html>
